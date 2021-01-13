@@ -1,8 +1,8 @@
-﻿using Data.Common;
-using Data.Entities;
+﻿using Data.Entities;
 using Data.Exceptions;
 using Data.Validation;
-using System;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Data.Providers
 {
@@ -40,6 +40,16 @@ namespace Data.Providers
 			var studentEntity = student as Student ?? new Student { Id = student.Id, Name = student.Name };
 			_context.Students.Add(studentEntity);
 			_context.SaveChanges();
+		}
+		public Student GetById(int studentId)
+		{
+			return _context.Students
+				.Where(s => s.Id == studentId)
+				.Include(s => s.Enrollments)
+					.ThenInclude(e => e.Course)
+					.ThenInclude(e => e.CourseProfessors)
+					.ThenInclude(cp => cp.Professor)
+				.SingleOrDefault();
 		}
 	}
 }

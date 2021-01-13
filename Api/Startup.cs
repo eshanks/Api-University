@@ -132,7 +132,7 @@ namespace Api
 			Console.WriteLine($"Student: {enrollment.Student.Name} enrolled into {enrollment.Course.Name}!");
 
 			// BUG: This line fails, need to find the cause and correct the issue. 
-			//Console.WriteLine($"Student: {enrollment.Student.Name} enrolled into {enrollment.Course.Name} instructed by {enrollment.Professor.Name}!");
+			Console.WriteLine($"Student: {enrollment.Student.Name} enrolled into {enrollment.Course.Name} instructed by {enrollment.Professor.Name}!");
 
 			Console.WriteLine();
 		}

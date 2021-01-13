@@ -51,5 +51,9 @@ namespace Data.Providers
 		{
 			return _context.Professors.ToList();
 		}
+		public Professor GetById(int id)
+		{
+			return _context.Professors.Find(id);
+		}
 	}
 }

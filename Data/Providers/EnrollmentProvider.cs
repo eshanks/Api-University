@@ -1,6 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Data.Common;
 using Data.Entities;
 using Data.Exceptions;
 using Data.Validation;
@@ -38,14 +37,33 @@ namespace Data.Providers
 		public Enrollment Enroll(Student student, Course course, Professor professor)
 		{
 			var enrollment = new Enrollment { CourseId = course.Id, StudentId = student.Id, ProfessorId = professor.Id };
+
+			// Validate the enrollment. 
+			if (!_validator.IsValid(enrollment, out var errors))
+				throw new ValidationException(errors);
+
 			_context.Enrollments.Add(enrollment);
 			_context.SaveChanges();
 
 			return _context.Enrollments
 				.Where(e => e.Id == enrollment.Id)
+				.Include(e => e.Professor)
 				.Include(e => e.Student)
 				.Include(e => e.Course)
 				.SingleOrDefault();
+		}
+
+		/// <summary>
+		///		Gets a list of all enrollments.
+		/// </summary>
+		/// <returns> The list of all enrollments. </returns>
+		public IEnumerable<Enrollment> GetAll()
+		{
+			return _context.Enrollments
+				.Include(e => e.Professor)
+				.Include(e => e.Student)
+				.Include(e => e.Course)
+				.ToList();
 		}
 	}
 }

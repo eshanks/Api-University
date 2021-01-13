@@ -1,6 +1,6 @@
 ﻿using Data.Entities;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Data.Validation
 {
@@ -10,12 +10,13 @@ namespace Data.Validation
 	public class EnrollmentValidator
 		: IValidator<Enrollment>
 	{
+		private readonly IEnumerable<IValidationRule<Enrollment>> _enrollmentValidationRules;
 		/// <summary>
 		///		Creates a new instance of a <see cref="EnrollmentValidator"/>.
 		/// </summary>
 		public EnrollmentValidator(IEnumerable<IValidationRule<Enrollment>> rules)
 		{
-			
+			_enrollmentValidationRules = rules;
 		}
 
 		/// <summary>
@@ -26,7 +27,10 @@ namespace Data.Validation
 		/// <returns> The value indicating whether the object is valid. </returns>
 		public bool IsValid(Enrollment target, out Dictionary<string, string> errors)
 		{
-			throw new NotImplementedException();
+			errors = new Dictionary<string, string>();
+			foreach (var rule in _enrollmentValidationRules)
+				rule.Enforce(target, errors);
+			return !errors.Any();
 		}
 	}
 }

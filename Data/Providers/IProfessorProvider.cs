@@ -18,6 +18,8 @@ namespace Data.Providers
 		///		Gets all professors. 
 		/// </summary>
 		/// <returns></returns>
-		IEnumerable<Professor> GetAll(); 
+		IEnumerable<Professor> GetAll();
+
+		Professor GetById(int id);
 	}
 }
